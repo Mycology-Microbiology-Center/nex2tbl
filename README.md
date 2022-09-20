@@ -17,6 +17,15 @@ In addition, a user must specify the following values, explained in detail [here
 
 
 
+```
+codon_pos	23123123123123123123123
+seq1		--------ttggcttcgttgttt
+seq2		-------gctggcgacgttgttc
+seq3		-----------------ttgttc
+seq4		gaccgttgcttgcgacgctgttc
+column_n	123456789 etc..........
+```
+
 Example of output for a single sequence:
 ```
 >Features AP0451
