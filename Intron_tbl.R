@@ -6,15 +6,15 @@ library(ape)
 library(plyr)
 
 ## Specify input and output files
-INPUT_NEX <- "test/RPB2.nex"
-OUTPUT_TBL <- "test/RPB2.nex.tbl"
+INPUT_NEX <- "test/exons-introns_CODON_START-1_TEF1.nex"
+OUTPUT_TBL <- "test/exons-introns_CODON_START-1_TEF1.nex.tbl"
 # OUTPUT_TBL <- NULL              # print the results to screen
 
 ## Specify user-defined variables
-GENE <- "rpb2"
-PRODUCT <- "RNA polymerase II second largest subunit"
+GENE <- "gene_short_name"
+PRODUCT <- "gene_full_name"
 TRANSTABLE <- 1
-CODON_START <- 3
+CODON_START <- 1
 FULL_GENE <- FALSE
 
 
@@ -257,8 +257,8 @@ prep_for_tbl <- function(x){
 
 ## Function to construct feature table (for single sequence)
 make_tbl <- function(x,
-                     gene = "placeholder gene short name", 
-                     product = "placeholder gene full name",
+                     gene = "placeholder_gene_short_name", 
+                     product = "placeholder_gene_full_name",
                      transl_table = 1,
                      full_gene = FALSE){
   
