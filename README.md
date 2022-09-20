@@ -7,15 +7,13 @@ BEGIN SETS;
 charset intron = 202-256 394-451;
 END;
 ```
-In addition, a user must specify the following values, explained in detail [here](http://www.insdc.org/documents/feature_table.html#7.2) and [here](http://www.insdc.org/documents/feature_table.html#7.3.1).
+In addition, a user must specify the following values (explained in detail [here](http://www.insdc.org/documents/feature_table.html#7.3.1)).
 
 - `GENE` - gene name, e.g., "rpb1".
 - `PRODUCT` - name of the produced protein, e.g., "RNA polymerase II largest subunit".
 - `TRANSL_TABLE` - defines the genetic code table used, by default is 1 - universal genetic code table.
-- `CODON_START` - indicates the offset at which the first complete codon of a coding region can be found, relative to the first base. Can be 1, 2, or 3.
 - `FULL_GENE` - can be FALSE ot TRUE depending on if the sequence covers the whole coding region of a protein. Usually it is not the case, and then locations of partial (incomplete) regions will be indicated with a  `<` or `>` before the number. Note: if TRUE, GenBank expects CODON_START to be 1. 
-
-
+- `CODON_START` - indicates the offset at which the first complete codon of a coding region can be found, relative to the first base of a sequence that starts first in alignment. Can be 1, 2, or 3. On the example below it is seq4, and `CODON_START` will be 3.
 
 ```
 codon_pos	23123123123123123123123
