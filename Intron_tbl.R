@@ -6,15 +6,15 @@ library(ape)
 library(plyr)
 
 ## Specify input and output files
-INPUT_NEX <- "TEF1_part1.nex"
-OUTPUT_TBL <- "TEF1_part1_R.tbl"
+INPUT_NEX <- "test/RPB2.nex"
+OUTPUT_TBL <- "test/RPB2.nex.tbl"
 # OUTPUT_TBL <- NULL              # print the results to screen
 
 ## Specify user-defined variables
-GENE <- "tef1"
-PRODUCT <- "translation elongation factor 1-alpha"
+GENE <- "rpb2"
+PRODUCT <- "RNA polymerase II second largest subunit"
 TRANSTABLE <- 1
-CODON_START <- 1
+CODON_START <- 3
 FULL_GENE <- FALSE
 
 
@@ -49,21 +49,25 @@ nex <- read.nexus.data(INPUT_NEX)
 
 ## Parse coordinates of intronic regions
 introns <- grep(
-  pattern = "charset intron = ",
+  pattern = "charset\\s+intron\\s*=\\s*",
   x = readLines(INPUT_NEX),
+  ignore.case = TRUE,
   value = TRUE)
 
 introns <- gsub(
-  pattern = "charset intron = |;",
-  replacement = "", perl = T, x = introns)
+  pattern = "charset\\s+intron\\s*=\\s*|;",
+  replacement = "", 
+  ignore.case = TRUE,
+  perl = T, 
+  x = introns)
 
 introns <- strsplit(x = introns, split = " ")[[1]]
 introns <- llply(.data = as.list(introns),
-  .fun = function(z){ 
-    z <- strsplit(z, split = "-")[[1]]
-    z <- as.numeric(z)
-    return(z)
-    })
+                 .fun = function(z){ 
+                   z <- strsplit(z, split = "-")[[1]]
+                   z <- as.numeric(z)
+                   return(z)
+                 })
 
 names(introns) <- paste("Intron_", 1:length(introns), sep = "")
 
@@ -87,13 +91,13 @@ collapseConsecutive <- function(x){
   
   ## Find ranges of numbers
   rg <- cumsum(c(TRUE, diff(x) > 1))
-
+  
   ## Split numbers into ranges
   rs <- split(x = x, f = rg)
-
+  
   ## Preserve only the first and last number in a range
   rs <- llply(.data = rs, .fun = function(z){ z[c(1, length(z))] })
-
+  
   return(rs)
 }
 # collapseConsecutive(c(1,2,3,4,5,6,8,9,10,22,23))
@@ -110,15 +114,15 @@ oth <- oth[!oth %in% ii]
 
 if(length(oth) > 0){
   ex <- collapseConsecutive(oth)
-
+  
   ## Rename exons
   max_ex <- grep(pattern = "Exon_[0-9]+", x = names(introns), value = T, perl = T)
   max_ex <- max(as.numeric(gsub(pattern = "Exon_", replacement = "", x = max_ex)))
   names(ex) <- paste("Exon_", (max_ex + 1):(max_ex + length(ex)), sep = "")
-
+  
   ## Add regions to the main list
   introns <- c(introns, ex)
-
+  
   ## Sort regions by position
   introns <- introns[ order(laply(.data = introns, .fun = function(z){ z[1] })) ]
 }
@@ -153,26 +157,26 @@ numb <- llply(
 extract_region <- function(x, coords){ x[ coords[1]:coords[2] ] }
 
 numb_reg <- llply(.data = numb,
-  .fun = function(z){
-    llply(.data = introns, .fun = function(cc){
-      extract_region(x = z, coords = cc) })
-  })
+                  .fun = function(z){
+                    llply(.data = introns, .fun = function(cc){
+                      extract_region(x = z, coords = cc) })
+                  })
 
 
 ## Extract length of each region for each sequence
 reg_len <- ldply(.data = numb_reg, .fun = function(z){
-    ldply(.data = z, .fun = function(r){
-      r <- na.omit(r)
-      if(length(r) > 0){
-        mi <- min(r, na.rm = TRUE)
-        ma <- max(r, na.rm = TRUE)
-      } else {
-        mi <- ma <- NA
-      }
-      rez <- data.frame(Start = mi, End = ma)
-      return(rez)
-    }, .id = "Region")
-  }, .id = "SeqID")
+  ldply(.data = z, .fun = function(r){
+    r <- na.omit(r)
+    if(length(r) > 0){
+      mi <- min(r, na.rm = TRUE)
+      ma <- max(r, na.rm = TRUE)
+    } else {
+      mi <- ma <- NA
+    }
+    rez <- data.frame(Start = mi, End = ma)
+    return(rez)
+  }, .id = "Region")
+}, .id = "SeqID")
 
 
 ## Remove missing regions
@@ -181,52 +185,43 @@ reg_len <- reg_len[!is.na(reg_len$Start), ]
 
 ## Find codon position for each sequence
 get_codon <- function(z, CDSTART = NULL){
-
+  
   ## Sequence name
   seqid <- as.character( z$SeqID[1] )
-
+  
   ## Get sequence
   seq <- numb_reg[[ seqid ]]
-
+  
   ## Get sequence of the first exon
   exn <- z$Region[ grep(pattern = "Exon", x = z$Region)[1] ]
   seq <- seq[[ exn ]]
-
+  
   ## Find start postion
   frst <- which(seq == 1)
   
   if(CDSTART == 1){
-    cdn <- rep(1:3, times = length(seq))
+    cdn <- rep(c(1,3,2), times = length(seq))
   }
   if(CDSTART == 2){
-    cdn <- rep(c(2,3,1), times = length(seq))
+    cdn <- rep(c(2,1,3), times = length(seq))
   }
   if(CDSTART == 3){
-    cdn <- rep(c(3,1,2), times = length(seq))
+    cdn <- rep(c(3,2,1), times = length(seq))
   }
-
+  
   rz <- cdn[frst]
-
-  ## GenBank codon_start:
-  # 1st position = 1
-  # 2nd position = 3  !!!
-  # 3rd position = 2
-
-  if(rz == 1){ rz_gb <- 1 }
-  if(rz == 2){ rz_gb <- 3 }
-  if(rz == 3){ rz_gb <- 2 }
-
-  rz <- data.frame(codon_start = rz_gb)
+  
+  rz <- data.frame(codon_start = rz)
   return(rz)
 }
 ## e.g.,
-# get_codon(z = subset(reg_len, SeqID == "SS1302"), CDSTART = 1)
-# get_codon(z = subset(reg_len, SeqID == "AP1886"), CDSTART = 1)
+# get_codon(z = subset(reg_len, SeqID == "AP2508"), CDSTART = 1)
+# get_codon(z = subset(reg_len, SeqID == "AP2654"), CDSTART = 1)
 
 codons <- ddply(.data = reg_len,
-  .variables = "SeqID",
-  .fun = function(z, ...){ get_codon(z, ...) },
-  CDSTART = CODON_START)
+                .variables = "SeqID",
+                .fun = function(z, ...){ get_codon(z, ...) },
+                CDSTART = CODON_START)
 
 
 
@@ -239,22 +234,22 @@ codons <- ddply(.data = reg_len,
 prep_for_tbl <- function(x){
   # x = part of a data.frame with region coordinates
   #   e.g., x <- subset(reg_len, SeqID == "SS1302")
-
+  
   ## Extract exons
   ex <- x[ grep(pattern = "Exon_", x = x$Region), ]
-
+  
   ## Collapse consequtive ranges
   res <- sort(unlist(alply(.data = ex, .margins = 1, .fun = function(z){ z$Start : z$End })))
   res <- collapseConsecutive(res)
-
+  
   ## Convert to list
   # res <- alply(.data = ex, .margins = 1, .fun = function(z){ c(z$Start, z$End) })
-
+  
   ## Add sequence attributes
   attr(res, which = "SeqID") <- as.character( x$SeqID[1] )
   attr(res, which = "codon") <- codons[ which(codons$SeqID %in% x$SeqID[1]), "codon_start" ]
   attr(res, which = "seqlen") <- SeqLen[ which(SeqLen$SeqID %in% x$SeqID[1]), "SeqLen" ]
-
+  
   return(res)
 }
 
@@ -262,28 +257,29 @@ prep_for_tbl <- function(x){
 
 ## Function to construct feature table (for single sequence)
 make_tbl <- function(x,
-  gene = "tef1", product = "translation elongation factor 1-alpha",
-  transl_table = 1,
-  full_gene = FALSE){
-
+                     gene = "placeholder gene short name", 
+                     product = "placeholder gene full name",
+                     transl_table = 1,
+                     full_gene = FALSE){
+  
   # x = output of `prep_for_tbl`
   #     list with exon coordinates + attributes
-
+  
   min_len <- 1
   max_len <- attr(x, which = "seqlen")
-
+  
   if(full_gene == FALSE){
     min_len <- paste("<", min_len, sep = "")
     max_len <- paste(">", max_len, sep = "")
-
+    
     x[[1]][1] <- paste("<", x[[1]][1], sep = "")
     x[[length(x)]][2] <- paste(">", x[[length(x)]][2], sep = "")
   }
-
+  
   ## CDS
   CDS <- laply(.data = x, .fun = paste, collapse = "\t")
-
-   ## Print feature table
+  
+  ## Print feature table
   cat(">Features ", attr(x, which = "SeqID"), "\n", sep = "")
   cat(paste(min_len, max_len, "gene", sep = "\t"), "\n", sep = "")
   cat("\t", "\t", "\t", "gene", "\t", gene, "\n", sep = "")
@@ -291,11 +287,11 @@ make_tbl <- function(x,
   if(length(CDS) > 1){
     for(i in 2:length(CDS)){
       cat(CDS[i], "\n", sep = "")
-  }}
+    }}
   cat("\t", "\t", "\t", "product", "\t", product, "\n", sep = "")
   cat("\t", "\t", "\t", "codon_start", "\t", attr(x, which = "codon"), "\n", sep = "")
   cat("\t", "\t", "\t", "transl_table", "\t", transl_table, "\n", sep = "")
-
+  
 }
 
 
@@ -308,7 +304,7 @@ For_tbl <- dlply(
   .data = reg_len,
   .variables = "SeqID",
   .fun = prep_for_tbl
-  )
+)
 
 
 ## Export feature tables to the file
