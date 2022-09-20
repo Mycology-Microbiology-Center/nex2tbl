@@ -1,0 +1,50 @@
+#NEXUS
+
+BEGIN DATA;
+DIMENSIONS  NTAX=22 NCHAR=117;
+FORMAT DATATYPE=DNA GAP=- MISSING=?;
+MATRIX
+
+SS1501   gtcagcgg-ttacct----ccatattgta--catgacattcatc---ct-tctttgcaggcgagtttatctta-atgcatctcagctgggagatgt---------------------
+SS1520   gtcagcag-tttccttcggccacgttgta--cgtgtcattcatc---tt-tccttgcag----------------------------------------------------------
+SS1683   --------------------------------tgaattcccagct-aat-cgctcgcaggtgagcccgtggtt-agggatgatagcagctat-------------------------
+SS1527   gtgagcga-gtgcggtttcatcaatctat--tgcgtagcctcac---gt-cgcttgcaggtgagccgatttca-tgagtta------------------------------------
+SS1629   gtgagcga-gtgcggtttcatcaatctat--tgcgtagcctcac---gt-cgcttgcag----------------------------------------------------------
+SS1554   gtgagcga-gtgcggtttcatcaatctat--tgcgtagcctcac---gt-cgcttgcaggtgagccgatttca-tgagttatt--ttgttacacctctgatgc--------------
+SS1628   gtgagcga-gtgcggtttcatcaatctat--tgcgtagcctcac---gt-cgcttgcaggtgagccgatttca-tgakttatt--ttgttacacctctgatgcct------------
+SS1684   gtgagcga-gtgcggtttcatcaatctat--ttcgtagcctcac---at-cgcttgcag----------------------------------------------------------
+SS1688   gtgagcga-gtgcggtttcatcaatctat--tgcgtagcctcac---rt-cgcttgcaggtgagcccattttccttakttatt--ttgtcacac-----------------------
+SS1525   gtgagtct-cgcgtttccggagcacagaa---gaagatgctcat---atgtgtaatcaggtaagccccttgat-cacgtcact-gttgtggcgctt---------------------
+AP1773   gtgagtct-tatatttttgtaagccaggg---ggagatgctc-----atgtgtcattaggtaagccccttgat-cacgtca------------------------------------
+SS1686   gtaagttt-tgctagtttgacacagaagas-gagagaagcttaa---ct-gtgctttaggttagtcttctcgc-cgcttgaac-tattgaccgtgttctgattgagaacgactgtag
+SS1542   gtgagggt-tgttcctttcacctgaacaa---acaagaatctaa---ag-gtgcactag----------------------------------------------------------
+SS1528   gttagctc-cacgcatttgtgtgcaaaag---gcagatgctcatt-----ctgttacaggttagttcttgctt-tacgtaaca-cattttacgtct---------------------
+SS1531   gtatgcac-ttcagctgcatttccaaggt----gctgtgctgac---ac-atgacacaggtacgttgtctcat-ccatgttcc--ttatggtgatt---------------------
+SS1570   gtacgcat-ttcagct-tatacacaatat----gatgtgttg-----ac-atggcataggtatgttatctcat-gcatgtccc--tcgagttggttcctgatgacgcct--------
+SS1582   gtacgcgg-ttcaacgmtattctgaccac-----tagttctgac---at-gctgttcaggtaaagcacctttt-tgccttcat--t-------------------------------
+SS1507   gtacgatt-taggcacatgtttatgcagc----agcctattgact-tac-tttatgtaggtaagtccatggaa-tcatgaggtccttgtgccgtcttctaataaa------------
+SS1510   gcatgtgc-tatacagatgttttgcgact-----gcttcctaac---tcatctgtgtaggtaaggctcttgat-cacgtcact-cctatgcccttttctgatcga------------
+SS1548   gtatgtcc-tacacaaatgttttgcgaca-----gtttcttaactcatcatccttgcaggtaaggctcttaat-cacgtcact--ttatgccctgttctg-----------------
+AP1776   gtacgcctatgcacatgtgttctggtagt-----agactctgac---gt-cttcttaag----------------------------------------------------------
+SS1249   gcaagtgt-ctctgacgtacgttaaaagcctgcgtcatgctgac---ac-atgcgataggtaagtgtctggct-----gttcc-gtcaagacgttt---------------------
+;
+
+END;
+
+BEGIN ASSUMPTIONS;
+EXSET * UNTITLED  =  1-59 60-117;
+END;
+
+BEGIN CODONS;
+CODONPOSSET * CodonPositions =
+ N:,
+ 1: 1-115\3,
+ 2: 2-116\3,
+ 3: 3-117\3;
+CODESET  * UNTITLED = Universal: all ;
+END;
+
+BEGIN SETS;
+charset intron = 1-59 60-117;
+END;
+
