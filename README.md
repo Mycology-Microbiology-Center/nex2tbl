@@ -1,6 +1,8 @@
 # nex2tbl
 nex2tbl is a tool aimed to help with submission of protein-coding DNA sequences to GenBank. Such sequences are commonly submitted through BankIt portal, where a [Feature Table File](https://www.ncbi.nlm.nih.gov/WebSub/html/help/feature-table.html) (.tbl file) is prompted if a user uploads multiple records. Preparation of .tbl file can be a laborious task, especially if the sequences include multiple introns or start from different codon positions. nex2tbl allows to create a minimum essential .tbl with 2 [feature keys](https://www.insdc.org/submitting-standards/feature-table/#7.2) (`gene` and `CDS`) and 3 [qualifiers](http://www.insdc.org/documents/feature_table.html#7.3.1) (`product`, `codon_start`, and `transl_table`) that are altogether enough for GenBank to correctly translate DNA into amino acids.
 
+Current way of usage: download [nex2tbl.R](/nex2tbl.R), place it in the directory with your input files, specify file names in the beginning of the script, and execute commands sequentially. .tbl file will appear in the same directory.
+
 Input for the tool is alignment of the submitted sequences of one gene in nexus format ([example](/test/exons-introns_CODON_START-1_TEF1_simple.nex)). Intron positions should be specified as column spans in a single charset called `intron`, like this:
 ```
 BEGIN SETS;
@@ -25,7 +27,7 @@ seq4       gaccgttgcttgcgacgctgttc
 column_n   123456789 etc..........
              ↑
 ```
-### Example of output for a single sequence:
+### Example of output for a single sequence
 ```
 >Features AP0451
 <1	>817	gene
@@ -37,7 +39,7 @@ column_n   123456789 etc..........
 			codon_start	3
 			transl_table	1
 ```
-### Current limitations:
+### Current limitations
 - `codon_start` won't be filled in the .tbl for sequences that start from intron.
 - Exon-only alignment is not supported.
 - Intron-only alignment is not supported.
