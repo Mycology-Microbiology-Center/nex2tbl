@@ -6,14 +6,14 @@ library(ape)
 library(plyr)
 
 ## Specify input and output files
-INPUT_NEX <- "test/exons-introns_CODON_START-1_TEF1.nex"
-OUTPUT_TBL <- "test/exons-introns_CODON_START-1_TEF1.nex.tbl"
+INPUT_NEX <- "test/exons-introns_CODON_START-1_TEF1_simple.nex"
+OUTPUT_TBL <- "test/exons-introns_CODON_START-1_TEF1_simple.nex.tbl"
 # OUTPUT_TBL <- NULL              # print the results to screen
 
 ## Specify user-defined variables
-GENE <- "gene_short_name"
-PRODUCT <- "gene_full_name"
-TRANSTABLE <- 1
+GENE <- "gene_name"
+PRODUCT <- "product_name"
+TRANSL_TABLE <- 1
 CODON_START <- 1
 FULL_GENE <- FALSE
 
@@ -34,7 +34,7 @@ if(is.na(PRODUCT) | is.null(PRODUCT) | length(PRODUCT) != 1){
   warning("Please provide valid PRODUCT description.\n")
 }
 
-if(is.na(TRANSTABLE) | is.null(TRANSTABLE) | length(TRANSTABLE) != 1){
+if(is.na(TRANSL_TABLE) | is.null(TRANSL_TABLE) | length(TRANSL_TABLE) != 1){
   warning("Please provide valid translation table definition.\n")
 }
 
@@ -257,8 +257,8 @@ prep_for_tbl <- function(x){
 
 ## Function to construct feature table (for single sequence)
 make_tbl <- function(x,
-                     gene = "placeholder_gene_short_name", 
-                     product = "placeholder_gene_full_name",
+                     gene = "placeholder_gene_name", 
+                     product = "placeholder_product_name",
                      transl_table = 1,
                      full_gene = FALSE){
   
@@ -315,7 +315,7 @@ l_ply(
   .fun = make_tbl,
   gene = GENE,
   product = PRODUCT,
-  transl_table = TRANSTABLE,
+  transl_table = TRANSL_TABLE,
   full_gene = FULL_GENE)
 
 ## Stop writing to the file
