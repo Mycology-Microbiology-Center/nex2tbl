@@ -40,7 +40,7 @@ column_n   123456789 etc..........
 			transl_table	1
 ```
 ### Current limitations
-- `codon_start` won't be filled in the .tbl for sequences that start from intron.
+- `codon_start` value won't be present in the .tbl for sequences that start from intron. In other aspects the file will be ok.
 - Exon-only alignment is not supported.
 - Intron-only alignment is not supported.
 ### Credits
