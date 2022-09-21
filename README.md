@@ -15,7 +15,7 @@ In addition, a user must specify the following values:
 - `PRODUCT` - name of the produced protein, e.g., "RNA polymerase II largest subunit".
 - `TRANSL_TABLE` - defines the genetic code table used, by default is 1 - universal genetic code table.
 - `FULL_GENE` - can be `FALSE` or `TRUE` depending on whether the sequence covers the whole coding region of a protein. Usually it is not the case, and then locations of partial (incomplete) regions will be indicated with `<` or `>` before the number. Note: if `TRUE`, GenBank expects `CODON_START` to be 1. 
-- `CODON_START` - indicates the offset at which the first complete codon of a coding region can be found in the alignment. Can be 1, 2, or 3. On the example below, the first complete codon is in the seq4 and starts at the column 3 (marked with arrows), therefore `CODON_START` will be 3. Note: to define this value a user must know the coding frame of alignment in advance.
+- `CODON_START` - indicates the offset at which the first complete codon of a coding region can be found in the alignment (in relation to the first base of the first exon). Can be 1, 2, or 3. On the example below, the first complete codon is in the seq4 and starts at the column 3 (marked with arrows), therefore `CODON_START` will be 3. Note: to define this value a user must know the coding frame of alignment in advance.
 
 ```
              ↓
