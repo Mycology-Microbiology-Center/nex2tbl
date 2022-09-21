@@ -59,19 +59,6 @@ SS1264   ---------cgtgayttyatcaagaacatgatcactggtacctcccaggctgactgcgccattcttatcat
 
 END;
 
-BEGIN ASSUMPTIONS;
-EXSET * UNTITLED  =  202-256 394-451;
-END;
-
-BEGIN CODONS;
-CODONPOSSET * CodonPositions =
- N:,
- 1: 1-610\3,
- 2: 2-608\3,
- 3: 3-609\3;
-CODESET  * UNTITLED = Universal: all ;
-END;
-
 BEGIN SETS;
 charset INTRON= 202-256 394-451;
 END;
