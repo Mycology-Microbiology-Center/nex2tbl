@@ -29,13 +29,13 @@ column_n   123456789 etc..........
 ```
 ### Example of output for a single sequence
 ```
->Features AP0451
-<1	>817	gene
-			gene	rpb1
-<37	371	CDS
-420	737
-789	>817
-			product	RNA polymerase II largest subunit
+>Features seq4
+<1	>2119	gene
+			gene	rpb2
+<1	74	CDS
+128	1087
+1144	>2119
+			product	RNA polymerase II second largest subunit
 			codon_start	3
 			transl_table	1
 ```
