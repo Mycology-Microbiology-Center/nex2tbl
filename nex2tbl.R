@@ -1,22 +1,30 @@
 ## Script to convert NEXUS-alignment to GenBank feature table
 ## Intron positions should be encoded in the following format "charset intron = 202-256 394-451;"
 
+nex2tbl <- function(INPUT_NEX, OUTPUT_TBL,
+  GENE = "gene_name",
+  PRODUCT = "product_name",
+  TRANSL_TABLE = 1,
+  CODON_START = 1,
+  FULL_GENE = FALSE
+  ){
+
+
+# ## Specify input and output files
+# INPUT_NEX    <- "test/exons-introns_CODON_START-1_TEF1_simple.nex"
+# OUTPUT_TBL   <- "test/exons-introns_CODON_START-1_TEF1_simple.nex.tbl"
+# # OUTPUT_TBL <- NULL              # print the results to screen
+# 
+# ## Specify user-defined variables
+# GENE         <- "gene_name"
+# PRODUCT      <- "product_name"
+# TRANSL_TABLE <- 1
+# CODON_START  <- 1
+# FULL_GENE    <- FALSE
+
 
 library(ape)
 library(plyr)
-
-## Specify input and output files
-INPUT_NEX <- "test/exons-introns_CODON_START-1_TEF1_simple.nex"
-OUTPUT_TBL <- "test/exons-introns_CODON_START-1_TEF1_simple.nex.tbl"
-# OUTPUT_TBL <- NULL              # print the results to screen
-
-## Specify user-defined variables
-GENE <- "gene_name"
-PRODUCT <- "product_name"
-TRANSL_TABLE <- 1
-CODON_START <- 1
-FULL_GENE <- FALSE
-
 
 ############################################################
 ############################################################ Data validation
@@ -321,3 +329,4 @@ l_ply(
 ## Stop writing to the file
 if(!is.null(OUTPUT_TBL)){ sink() }
 
+}
