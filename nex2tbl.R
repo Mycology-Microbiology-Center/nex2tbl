@@ -329,4 +329,8 @@ l_ply(
 ## Stop writing to the file
 if(!is.null(OUTPUT_TBL)){ sink() }
 
+results <- list(
+  tabular = For_tbl
+  )
+invisible(results)
 }
