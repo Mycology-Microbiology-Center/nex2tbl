@@ -69,27 +69,41 @@ introns <- gsub(
   perl = T, 
   x = introns)
 
-introns <- strsplit(x = introns, split = " ")[[1]]
-introns <- llply(.data = as.list(introns),
-                 .fun = function(z){ 
-                   z <- strsplit(z, split = "-")[[1]]
-                   z <- as.numeric(z)
-                   return(z)
-                 })
+## If there are no introns
+if(length(introns) == 0){
 
-names(introns) <- paste("Intron_", 1:length(introns), sep = "")
+  aln_len <- length(nex[[1]])
+  introns <- list(
+    Exon_1 = c(1, aln_len)
+    )
+
+} else {
+## If there are some introns
+
+  introns <- strsplit(x = introns, split = " ")[[1]]
+  introns <- llply(.data = as.list(introns),
+                   .fun = function(z){ 
+                     z <- strsplit(z, split = "-")[[1]]
+                     z <- as.numeric(z)
+                     return(z)
+                   })
+
+  names(introns) <- paste("Intron_", 1:length(introns), sep = "")
 
 
-## Add first and last segments
-aln_len <- length(nex[[1]])
-if(introns[[1]][1] > 1){
-  introns <- c(list(c(1, introns[[1]][1] - 1)), introns)
-  names(introns)[1] <- "Exon_1"
-}
-if(introns[[length(introns)]][2] < aln_len){
-  introns <- c(introns, list(c(introns[[length(introns)]][2] + 1, aln_len)))
-  names(introns)[length(introns)] <- "Exon_Last"
-}
+  ## Add first and last segments
+  aln_len <- length(nex[[1]])
+  if(introns[[1]][1] > 1){
+    introns <- c(list(c(1, introns[[1]][1] - 1)), introns)
+    names(introns)[1] <- "Exon_1"
+  }
+  if(introns[[length(introns)]][2] < aln_len){
+    introns <- c(introns, list(c(introns[[length(introns)]][2] + 1, aln_len)))
+    names(introns)[length(introns)] <- "Exon_Last"
+  }
+
+} # end of introns
+
 
 
 ############ Add middle segments
