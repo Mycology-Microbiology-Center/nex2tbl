@@ -66,7 +66,6 @@ column_n   123456789 etc..........
 ## Current limitations
 
 - Value of `codon_start` won't be present in tbl for sequences that start from intron. In other aspects the file will be ok.
-- Exon-only alignment is not supported.
 - Intron-only alignment is not supported.
 
 ## Credits
