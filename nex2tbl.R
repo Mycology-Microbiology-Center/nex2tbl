@@ -46,6 +46,9 @@ if(is.na(TRANSL_TABLE) | is.null(TRANSL_TABLE) | length(TRANSL_TABLE) != 1){
   warning("Please provide valid translation table definition.\n")
 }
 
+if(FULL_GENE & CODON_START != 1){
+  warning("If the sequence covers the whole coding region of a protein, GenBank expects CODON_START to be 1.\n")
+}
 
 ############################################################
 ############################################################ Region coordinates
