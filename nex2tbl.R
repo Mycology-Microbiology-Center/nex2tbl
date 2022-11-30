@@ -208,22 +208,34 @@ reg_len <- ldply(.data = numb_reg, .fun = function(z){
 reg_len <- reg_len[!is.na(reg_len$Start), ]
 
 
+## Find if sequence starts with an intron
+reg_len <- ddply(.data = reg_len, .variables = "SeqID",
+  .fun = function(x){
+    if(grepl(pattern = "Intron", x = x$Region[1])){
+      x$StartsWithIntron <- TRUE
+    } else {
+      x$StartsWithIntron <- FALSE
+    }
+    return(x)
+})
+
+
 ## Find codon position for each sequence
 get_codon <- function(z, CDSTART = NULL){
   
   ## Sequence name
   seqid <- as.character( z$SeqID[1] )
-  
+
   ## Get sequence
   seq <- numb_reg[[ seqid ]]
-  
-  ## Get sequence of the first exon
-  exn <- z$Region[ grep(pattern = "Exon", x = z$Region)[1] ]
-  seq <- seq[[ exn ]]
-  
-  ## Find start postion
-  frst <- which(seq == 1)
-  
+
+  ## Get sequence of all exons
+  seq <- seq[ grep(pattern = "Exon", x = z$Region) ]
+  seq <- unlist(seq)
+
+  ## Find start postion of the first exon basepair
+  frst <- which.min(seq)
+
   if(CDSTART == 1){
     cdn <- rep(c(1,3,2), times = length(seq))
   }
@@ -233,9 +245,9 @@ get_codon <- function(z, CDSTART = NULL){
   if(CDSTART == 3){
     cdn <- rep(c(3,2,1), times = length(seq))
   }
-  
-  rz <- cdn[frst]
-  
+
+  rz <- cdn[ frst ]
+
   rz <- data.frame(codon_start = rz)
   return(rz)
 }
