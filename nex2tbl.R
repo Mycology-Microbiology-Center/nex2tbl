@@ -57,6 +57,11 @@ if(FULL_GENE & CODON_START != 1){
 ## Load alignment in NEXUS format
 nex <- read.nexus.data(INPUT_NEX)
 
+## Verify that all sequence names are unique
+if(length(names(nex)) != length(unique(names(nex)))){
+  stop("Sequence names are not unique in the Nexus file!\n")
+}
+
 
 ## Parse coordinates of intronic regions
 introns <- grep(
