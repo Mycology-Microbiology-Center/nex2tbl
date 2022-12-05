@@ -113,6 +113,11 @@ if(length(introns) == 0){
 } # end of introns
 
 
+## Check if there are any exon regions
+if(!sum(grepl(pattern = "Exon", x = names(introns))) > 0){
+  stop("There are no exon regions in the alignment!\n")
+}
+
 
 ############ Add middle segments
 
