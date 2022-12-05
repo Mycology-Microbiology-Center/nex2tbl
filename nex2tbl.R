@@ -369,7 +369,8 @@ l_ply(
 if(!is.null(OUTPUT_TBL)){ sink() }
 
 results <- list(
-  tabular = For_tbl
+  tabular = reg_len,
+  codons = codons
   )
 invisible(results)
 }
