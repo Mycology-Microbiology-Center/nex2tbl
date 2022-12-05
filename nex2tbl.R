@@ -230,7 +230,7 @@ get_codon <- function(z, CDSTART = NULL){
   seq <- numb_reg[[ seqid ]]
 
   ## Get sequence of all exons
-  seq <- seq[ grep(pattern = "Exon", x = z$Region) ]
+  seq <- seq[ grep(pattern = "Exon", x = names(seq)) ]
   seq <- unlist(seq)
 
   ## Find start postion of the first exon basepair
