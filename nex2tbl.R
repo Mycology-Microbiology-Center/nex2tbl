@@ -150,18 +150,23 @@ oth <- oth[!oth %in% ii]
 if(length(oth) > 0){
   ex <- collapseConsecutive(oth)
   
-  ## Rename exons
-  max_ex <- grep(pattern = "Exon_[0-9]+", x = names(introns), value = T, perl = T)
-  max_ex <- max(as.numeric(gsub(pattern = "Exon_", replacement = "", x = max_ex)))
-  names(ex) <- paste("Exon_", (max_ex + 1):(max_ex + length(ex)), sep = "")
+    ## Rename exons
+    if(sum(grepl(pattern = "Exon_", x = names(introns))) > 1){
+      max_ex <- grep(pattern = "Exon_[0-9]+", x = names(introns), value = T, perl = T)
+      max_ex <- max(as.numeric(gsub(pattern = "Exon_", replacement = "", x = max_ex)))
+      names(ex) <- paste("Exon_", (max_ex + 1):(max_ex + length(ex)), sep = "")
+    } else {
+      ## The case when there is just a single exon in alignment
+      names(ex) <- paste("Exon_")
+    }
+    
+    ## Add regions to the main list
+    introns <- c(introns, ex)
+    
+    ## Sort regions by position
+    introns <- introns[ order(laply(.data = introns, .fun = function(z){ z[1] })) ]
+  }
   
-  ## Add regions to the main list
-  introns <- c(introns, ex)
-  
-  ## Sort regions by position
-  introns <- introns[ order(laply(.data = introns, .fun = function(z){ z[1] })) ]
-}
-
 
 ############################################################
 ############################################################ Seq analysis
@@ -284,22 +289,28 @@ prep_for_tbl <- function(x){
   
   ## Extract exons
   ex <- x[ grep(pattern = "Exon_", x = x$Region), ]
-  
-  ## Collapse consequtive ranges
-  res <- sort(unlist(alply(.data = ex, .margins = 1, .fun = function(z){ z$Start : z$End })))
-  res <- collapseConsecutive(res)
-  
-  ## Convert to list
-  # res <- alply(.data = ex, .margins = 1, .fun = function(z){ c(z$Start, z$End) })
-  
-  ## Add sequence attributes
-  attr(res, which = "SeqID") <- as.character( x$SeqID[1] )
-  attr(res, which = "codon") <- codons[ which(codons$SeqID %in% x$SeqID[1]), "codon_start" ]
-  attr(res, which = "seqlen") <- SeqLen[ which(SeqLen$SeqID %in% x$SeqID[1]), "SeqLen" ]
-  
-  return(res)
-}
 
+    if(nrow(ex) >= 1){
+      ## Collapse consequtive ranges
+      res <- sort(unlist(alply(.data = ex, .margins = 1, .fun = function(z){ z$Start : z$End })))
+      res <- collapseConsecutive(res)
+      
+      ## Convert to list
+      # res <- alply(.data = ex, .margins = 1, .fun = function(z){ c(z$Start, z$End) })
+      
+      ## Add sequence attributes
+      attr(res, which = "SeqID") <- as.character( x$SeqID[1] )
+      attr(res, which = "codon") <- codons[ which(codons$SeqID %in% x$SeqID[1]), "codon_start" ]
+      attr(res, which = "seqlen") <- SeqLen[ which(SeqLen$SeqID %in% x$SeqID[1]), "SeqLen" ]
+    
+    } else {
+      ## The case with intron-only sequence
+      cat("WARNING: Intron-only sequence - ", as.character( x$SeqID[1] ), "\n")
+      res <- NULL
+    }
+    return(res)
+  }
+  
 
 
 ## Function to construct feature table (for single sequence)
@@ -311,7 +322,10 @@ make_tbl <- function(x,
   
   # x = output of `prep_for_tbl`
   #     list with exon coordinates + attributes
-  
+
+  ## Skip intron-only sequences (no output returned)
+  if(is.null(x)){ return(NULL) }
+
   min_len <- 1
   max_len <- attr(x, which = "seqlen")
   
@@ -352,6 +366,17 @@ For_tbl <- dlply(
   .variables = "SeqID",
   .fun = prep_for_tbl
 )
+
+attr(For_tbl, "split_type")   <- NULL
+attr(For_tbl, "split_labels") <- NULL
+
+## Remove NULL (no exons) instances
+nulls <- laply(.data = For_tbl, .fun = is.null)
+if(any(nulls)){ For_tbl <- For_tbl[ -which(nulls) ] }
+
+## Remove NAs (empty sequence)
+# nas <- ...
+# if(any(nas)){ For_tbl <- For_tbl[ -which(nas) ] }
 
 
 ## Export feature tables to the file
