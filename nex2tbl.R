@@ -4,8 +4,8 @@
 nex2tbl <- function(INPUT_NEX, OUTPUT_TBL,
   GENE = "gene_name",
   PRODUCT = "product_name",
-  TRANSL_TABLE = 1,
   CODON_START = 1,
+  TRANSL_TABLE = 1,
   FULL_GENE = FALSE
   ){
 
@@ -18,8 +18,8 @@ nex2tbl <- function(INPUT_NEX, OUTPUT_TBL,
 # ## Specify user-defined variables
 # GENE         <- "gene_name"
 # PRODUCT      <- "product_name"
-# TRANSL_TABLE <- 1
 # CODON_START  <- 1
+# TRANSL_TABLE <- 1
 # FULL_GENE    <- FALSE
 
 
