@@ -25,7 +25,7 @@ nex2tbl(
 
 ## Documentation
 
-Input for the tool is alignment of the submitted sequences of one gene in the nexus format (\*.nex, [example](/test/exons-introns_CODON_START-2_RPB1.nex)). Intron positions should be specified in the end of the file as column spans in a single charset called `intron`, like this:
+Input for the tool is an alignment of the submitted sequences of one gene in the nexus format (\*.nex, [example](/test/exons-introns_CODON_START-2_RPB1.nex)). Intron positions should be specified in the end of the file as column spans in a single charset called `intron`, like this:
 ```
 BEGIN SETS;
 charset intron = 202-256 394-451;
