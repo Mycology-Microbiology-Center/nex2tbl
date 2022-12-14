@@ -1,6 +1,6 @@
 # nex2tbl
 
-nex2tbl is an R tool aimed to help with submission of protein-coding DNA sequences to GenBank. Such sequences are commonly submitted through BankIt portal, where a [Feature Table File](https://www.ncbi.nlm.nih.gov/WebSub/html/help/feature-table.html) (\*.tbl file) is prompted if the user uploads multiple records. Preparation of tbl file can be a laborious task, especially if the sequences include multiple introns or start from different codon positions. nex2tbl allows to create a minimum essential tbl with 2 [feature keys](https://www.insdc.org/submitting-standards/feature-table/#7.2) (`gene` and `CDS`) and 5 [qualifiers](http://www.insdc.org/documents/feature_table.html#7.3.1) (`gene`, `product`, `codon_start`, `transl_table`, and `partial` aka `<`/`>`) that are altogether enough for GenBank to correctly translate DNA into amino acids.
+nex2tbl is an R tool aimed to help with submission of protein-coding DNA sequences to GenBank. Such sequences are commonly submitted through BankIt portal, where a [Feature Table File](https://www.ncbi.nlm.nih.gov/WebSub/html/help/feature-table.html) (\*.tbl file) is prompted if the user uploads multiple records. Preparation of the tbl file can be a laborious task, especially if the sequences include multiple introns or start from different codon positions. nex2tbl allows to create a minimum essential tbl with 2 [feature keys](https://www.insdc.org/submitting-standards/feature-table/#7.2) (`gene` and `CDS`) and 5 [qualifiers](http://www.insdc.org/documents/feature_table.html#7.3.1) (`gene`, `product`, `codon_start`, `transl_table`, and `partial` aka `<`/`>`) that are altogether enough for GenBank to correctly translate DNA into amino acids.
 
 ## Usage
 
@@ -25,7 +25,7 @@ nex2tbl(
 
 ## Documentation
 
-Input for the tool is alignment of the submitted sequences of one gene in nexus format (*.nex, [example](/test/exons-introns_CODON_START-2_RPB1.nex)). Intron positions should be specified in the end of the file as column spans in a single charset called `intron`, like this:
+Input for the tool is alignment of the submitted sequences of one gene in the nexus format (\*.nex, [example](/test/exons-introns_CODON_START-2_RPB1.nex)). Intron positions should be specified in the end of the file as column spans in a single charset called `intron`, like this:
 ```
 BEGIN SETS;
 charset intron = 202-256 394-451;
@@ -48,10 +48,10 @@ exon_column_n  123456789 etc..........
                  ↑
 ```
 
-- `TRANSL_TABLE` - defines the genetic code table used, by default is 1 - universal genetic code table.
-- `FULL_GENE` - can be `FALSE` or `TRUE` depending on whether the sequence covers the whole coding region of a protein. Usually it is not the case, and then locations of the first and last regions (assumed to be incomplete) will be indicated with `<` and `>` before the number. If `TRUE`, GenBank expects `CODON_START` to be 1. 
+- `TRANSL_TABLE` - defines the [genetic code table](https://www.insdc.org/submitting-standards/genetic-code-tables/) used, by default is 1 - universal genetic code table.
+- `FULL_GENE` - can be `FALSE` or `TRUE` depending on whether the sequence covers the whole coding region of a protein. Usually it is not the case, and then locations of the first and last regions (assumed to be incomplete) will be indicated with `<` and `>` before the numbers. If `TRUE`, GenBank expects `CODON_START` to be 1. 
 
-### Example of output for a single sequence
+### Output example for a single sequence
 ```
 >Features seq4
 <1	>2119	gene
