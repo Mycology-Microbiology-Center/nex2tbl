@@ -21,7 +21,7 @@ nex2tbl(
   FULL_GENE = FALSE
 )
 ```
-- Execute this script and resulting tbl file will appear in your working directory.
+- Execute this script, and resulting tbl file will appear in your working directory.
 
 ## Documentation
 
