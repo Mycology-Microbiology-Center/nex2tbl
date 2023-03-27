@@ -4,7 +4,7 @@ nex2tbl is an R tool aimed to help with submission of protein-coding DNA sequenc
 
 ## Usage
 
-- Load the script 
+- Load the script in the R environment
 ```R
 source("https://raw.githubusercontent.com/Mycology-Microbiology-Center/nex2tbl/main/nex2tbl.R")
 ```
