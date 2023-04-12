@@ -1,12 +1,13 @@
 ## Script to convert NEXUS-alignment to GenBank feature table
 ## Intron positions should be encoded in the following format "charset intron = 202-256 394-451;"
 
-function(INPUT_NEX, OUTPUT_TBL,
-         GENE = "gene_name",
-         PRODUCT = "product_name",
-         CODON_START = 1,
-         TRANSL_TABLE = 1,
-         FULL_GENE = FALSE
+nex2tbl <- function(INPUT_NEX,
+                    OUTPUT_TBL,
+                    GENE = "gene_name",
+                    PRODUCT = "product_name",
+                    CODON_START = 1,
+                    TRANSL_TABLE = 1,
+                    FULL_GENE = FALSE
 ){
   
   
