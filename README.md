@@ -4,7 +4,9 @@ nex2tbl is an R tool aimed to help with submission of protein-coding DNA sequenc
 
 ## Usage
 
-- Load the script in the R environment
+- Make sure that `ape` and `plyr` packages are installed in your R environment.  
+
+- Load the script.
 ```R
 source("https://raw.githubusercontent.com/Mycology-Microbiology-Center/nex2tbl/main/nex2tbl.R")
 ```
@@ -64,9 +66,10 @@ exon_column_n  123456789 etc..........
 			transl_table	1
 ```
 
-### Note
+### Notes
 
 - Intron-only sequences are not supported - if they are present in the alignment, warnings will be shown and such sequences will be absent in the tbl.
+- If charsets are not specified, whole aligment will be treated as a single exon.
 
 ## Credits
 
