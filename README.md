@@ -59,6 +59,7 @@ In addition, the user must specify the following variables:
 
 ### Notes
 
+- In exons, length of gaps must be multiple of three (e.g. `---`), or else the reading frame will be broken and the output will be wrong.  
 - Intron-only sequences are not supported - if they are present in the alignment, warnings will be shown and such sequences will be absent in the tbl.
 - If charsets are not specified, whole aligment will be treated as a single exon.
 
