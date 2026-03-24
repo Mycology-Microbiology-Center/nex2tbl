@@ -20,18 +20,20 @@ In addition, user should prepare the following variables:
 
 ![start_codon_example](https://github.com/Mycology-Microbiology-Center/nex2tbl/assets/62290967/ad7301b1-6431-4390-864c-6d0f2ee3b3ef)
 
-- `TRANSL_TABLE` - defines the [genetic code table](https://www.insdc.org/submitting-standards/genetic-code-tables/) used, by default is 1 - universal genetic code table.
+- `TRANSL_TABLE` - defines the [genetic code table](https://www.insdc.org/submitting-standards/genetic-code-tables/) used, by default it is 1 - universal genetic code table.
 - `FULL_GENE` - can be `FALSE` or `TRUE` depending on whether the sequence covers the whole coding region of a protein. Usually it is not the case, and then locations of the first and last regions (assumed to be incomplete) will be indicated with `<` and `>` before the numbers. If `TRUE`, GenBank expects `CODON_START` to be 1. 
 
 ### Run script
-1. Make sure that `ape` and `plyr` packages are installed in your R environment.  
+1. Launch `R`
 
-2. Load the script.
+2. Make sure that `ape` and `plyr` packages are installed in your R environment.  
+
+3. Load the script.
 ```R
 source("https://raw.githubusercontent.com/Mycology-Microbiology-Center/nex2tbl/main/nex2tbl.R")
 ```
 
-3. Specify input and output file names, as well as user-defined variables. Example:
+4. Specify input and output file paths, as well as user-defined variables. Example:
 ```R
 nex2tbl(
   INPUT_NEX = "exons-introns_CODON_START-2_RPB1.nex",
@@ -43,7 +45,7 @@ nex2tbl(
   FULL_GENE = FALSE
 )
 ```
-4. Execute this script, and resulting tbl file will appear in your working directory.
+5. Execute this script, and resulting tbl file will appear in your working directory.
 
 ## Output example for a single sequence
 ```
